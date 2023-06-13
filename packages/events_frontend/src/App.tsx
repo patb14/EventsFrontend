@@ -1,26 +1,67 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {useQuery} from "@apollo/client";
+import {gql} from "./__generated__";
+
+const GET_ALL_EVENTS = gql(
+    `query MyQuery {
+  allEvents {
+    edges {
+      node {
+        id
+        name
+        location {
+          name
+          address
+        }
+        gender {
+          gender
+        }
+        startDate
+        endDate
+        sessions {
+          edges {
+            node {
+              name
+              startTime
+              endTime
+            }
+          }
+        }
+        cost
+      }
+    }
+  }
+}`
+)
+
+function AllEventsList() {
+    const {loading, error, data} = useQuery(GET_ALL_EVENTS)
+
+    if (loading) return 'Loading...'
+    if (error) return error.message
+
+    return (
+        <div>
+            {data?.allEvents?.edges.map((event) => (
+                <div>
+                    <h1>
+                        {event?.node?.name + "\n"}
+                    </h1>
+                    <p>
+                        {event?.node?.location?.name} - {event?.node?.location?.address}
+                    </p>
+                    <p>
+                        {"$" + event?.node?.cost}
+                    </p>
+                </div>
+            ))}
+        </div>
+    )
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return AllEventsList()
 }
 
 export default App;
