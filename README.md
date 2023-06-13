@@ -1,1 +1,2 @@
 # EventsFrontend
+`lerna run start`
