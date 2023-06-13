@@ -1,0 +1,8 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "patrickbrownrigg",
+  "license": "MIT",
+  "private": true
+}
